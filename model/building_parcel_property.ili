@@ -1,0 +1,164 @@
+INTERLIS 2.3;
+
+MODEL Building_Parcel_Property (de)
+AT "mailto:bjsvwneu@localhost"
+VERSION "2021-10-06"  =
+  IMPORTS GeometryCHLV95_V1,Units,AdministrativeUnitsCH_V1,CHAdminCodes_V1;
+
+  TOPIC Building_Parcel_Property =
+
+    DOMAIN
+
+      Gender = (
+        queer,
+        !!@ ili2db.dispName = "non binary"
+        non_binary,
+        female,
+        male
+      );
+
+      Property_Type = (
+        /** house has multiple owners per flat, german: Stockwerkeigentum
+         */
+        !!@ ili2db.dispName = "condominium ownership (ownership per flat)"
+        condominium_ownership,
+        /** german: Gesamteigentum
+         */
+        !!@ ili2db.dispName = "total ownership (Gesamteigentum)"
+        total_ownership,
+        /** multiple owners, german: Miteigentum
+         */
+        !!@ ili2db.dispName = "joint ownership (multiple owners)"
+        joint_ownership,
+        /** single owner, german: Alleineigentum
+         */
+        !!@ ili2db.dispName = "wholly owned (single owner)"
+        wholly_owned
+      );
+
+      Security_Level = (
+        /** Facilities critical to national security.
+         */
+        !!@ ili2db.dispName = "Level 5"
+        level_5,
+        /** More than 15'000 square meters with more than 450 occupants.
+         */
+        !!@ ili2db.dispName = "Level 4"
+        level_4,
+        /** Between 7'500 and 15'000 square meters with 151 to 450 occupants.
+         */
+        !!@ ili2db.dispName = "Level 3"
+        level_3,
+        /** Between 250 and 7'500 square meters with 11 to 150 occupants with routine activities.
+         */
+        !!@ ili2db.dispName = "Level 2"
+        level_2,
+        /** Less than 250 square meter with less than 10 occupants.
+         */
+        !!@ ili2db.dispName = "Level 1"
+        level_1,
+        /** No relevant security level
+         */
+        !!@ ili2db.dispName = "unclassified"
+        unclassified
+      );
+
+    CLASS Building (ABSTRACT) =
+      Geometrie : MANDATORY SURFACE WITH (ARCS,STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0;
+      !!@ ili2db.dispName = "Number of Floors"
+      Nr_of_Floors : MANDATORY 1 .. 100;
+      !!@ ili2db.dispName = "Ground-Plan Area of Building"
+      Area : MANDATORY 0 .. 100000;
+      !!@ ili2db.dispName = "Year of Construction"
+      Year_of_Construction : 1500 .. 2100;
+    END Building;
+
+    CLASS Flat =
+      !!@ ili2db.dispName = "Number of Rooms"
+      Number_of_Rooms : MANDATORY 1 .. 50;
+      !!@ ili2db.dispName = "Area (m2)"
+      Area : 1 .. 10000 [Units.m2];
+    END Flat;
+
+    CLASS Office =
+      !!@ ili2db.dispName = "Number of Bureaus"
+      Number_of_Bureaus : MANDATORY 1 .. 1000;
+      Area : 1 .. 100000 [Units.m2];
+    END Office;
+
+    CLASS Parcel =
+      Geometrie : MANDATORY AREA WITH (ARCS,STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0.001;
+      EGRID : MANDATORY TEXT*14;
+      !!@ ili2db.dispName = "Parcel Number"
+      Number : MANDATORY 1 .. 10000;
+      Area : MANDATORY 5 .. 100000000 [Units.m2];
+      !!@ ili2db.dispName = "BFS-Nr"
+      BFS_Nr : MANDATORY CHAdminCodes_V1.CHMunicipalityCode;
+    END Parcel;
+
+    CLASS Office_Building
+    EXTENDS Building =
+      !!@ ili2db.dispName = "Number of Companies / Organizations"
+      Number_of_CompaniesOrganizations : MANDATORY 1 .. 100;
+      !!@ ili2db.dispName = "Building Security Level"
+      Building_Security_Level : MANDATORY Security_Level;
+    END Office_Building;
+
+    CLASS Person =
+      !!@ ili2db.dispName = "AHV-Nr"
+      AHV_Nr : MANDATORY 7560000000000 .. 7569999999999;
+      !!@ ili2db.dispName = "Birthdate"
+      Birth_Date : MANDATORY FORMAT INTERLIS.XMLDate "1800-1-1" .. "2100-1-1";
+      !!@ ili2db.dispName = "Family Name"
+      Name : MANDATORY TEXT*255;
+      !!@ ili2db.dispName = "Middle Name(s)"
+      Middle_Names : TEXT*255;
+      !!@ ili2db.dispName = "First Name"
+      First_Name : MANDATORY TEXT*255;
+      !!@ ili2db.dispName = "Gender"
+      Gender : MANDATORY Gender;
+    END Person;
+
+    CLASS Residential_Building
+    EXTENDS Building =
+      !!@ ili2db.dispName = "Number of Flats"
+      Number_of_Flats : MANDATORY 1 .. 100;
+      !!@ ili2db.dispName = "Number of Residents"
+      Number_of_Residents : MANDATORY 1 .. 1000;
+    END Residential_Building;
+
+    ASSOCIATION Building_Parcel =
+      Building -- {0..*} Building;
+      Parcel -- {1} Parcel;
+    END Building_Parcel;
+
+    CLASS Public_Office_Building
+    EXTENDS Office_Building =
+      !!@ ili2db.dispName = "Name of Authority"
+      Authority : MANDATORY TEXT*255;
+      !!@ ili2db.dispName = "Opening Hours (Days and Times)"
+      Opening_Hours : TEXT*255;
+    END Public_Office_Building;
+
+    ASSOCIATION Flat_ResidentialBuilding =
+      Flat -- {1..*} Flat;
+      ResidentialBuilding -<#> {1} Residential_Building;
+    END Flat_ResidentialBuilding;
+
+    ASSOCIATION Office_OfficeBuilding =
+      Office -- {1..*} Office;
+      OfficeBuilding -<#> {1} Office_Building;
+    END Office_OfficeBuilding;
+
+    ASSOCIATION Property =
+      Person -- {1..*} Person;
+      Parcel -- {0..*} Parcel;
+      !!@ ili2db.dispName = "Property Type"
+      Property_Type : MANDATORY Property_Type;
+      !!@ ili2db.dispName = "Ownership-Share (Percent)"
+      Ownership_Share : MANDATORY 0 .. 100 [Units.Percent];
+    END Property;
+
+  END Building_Parcel_Property;
+
+END Building_Parcel_Property.

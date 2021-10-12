@@ -1,7 +1,7 @@
 ---
 marp: true
-title: Marp CLI example
-description: Hosting Marp slide deck on the web
+title: Interlis Relations in QGIS
+description: How Interlis associations and inheritances are handled as QGIS relations
 theme: uncover
 paginate: true
 _paginate: false

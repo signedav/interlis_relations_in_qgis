@@ -1,0 +1,199 @@
+INTERLIS 2.3;
+
+!!@ technicalContact="models@geo.admin.ch"
+!!@ furtherInformation="http://www.geo.admin.ch/internet/geoportal/de/home/topics/geobasedata/models.html"
+MODEL CHBaseEx_MapCatalogue_V1 (en)
+AT "http://www.geo.admin.ch"
+VERSION "2015-08-12"  =
+  IMPORTS LocalisationCH_V1,CatalogueObjects_V1,WithLatestModification_V1,GraphicCHLV03_V1;
+
+  TOPIC MapCatalogue_WithLatestModification
+  EXTENDS CatalogueObjects_V1.Catalogues =
+
+    STRUCTURE ModInfo
+    EXTENDS WithLatestModification_V1.ModInfo =
+    END ModInfo;
+
+    DOMAIN
+
+      MapKindValue = TEXT;
+
+    CLASS MapKind
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      Modification : CHBaseEx_MapCatalogue_V1.MapCatalogue_WithLatestModification.ModInfo;
+      Value : MapKindValue;
+      UserText : LocalisationCH_V1.MultilingualText;
+      UNIQUE Value;
+    END MapKind;
+
+    STRUCTURE MapKindRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) MapKind;
+    END MapKindRef;
+
+  END MapCatalogue_WithLatestModification;
+
+END CHBaseEx_MapCatalogue_V1.
+
+!!@ technicalContact="models@geo.admin.ch"
+!!@ furtherInformation="http://www.geo.admin.ch/internet/geoportal/de/home/topics/geobasedata/models.html"
+MODEL CHBaseEx_WaterNet_V1 (en)
+AT "http://www.geo.admin.ch"
+VERSION "2015-08-12"  =
+  IMPORTS GeometryCHLV03_V1,LocalisationCH_V1,Dictionaries_V1,DictionariesCH_V1,CatalogueObjects_V1,AdministrativeUnits_V1,AdministrativeUnitsCH_V1,WithOneState_V1,WithModificationObjects_V1,GraphicCHLV03_V1,CHBaseEx_MapCatalogue_V1;
+
+  TOPIC WaterNet_Modifications
+  EXTENDS WithModificationObjects_V1.Modifications =
+
+    CLASS Modification (EXTENDED) =
+      ModificationTime (EXTENDED) : MANDATORY INTERLIS.XMLDateTime;
+      Description : MANDATORY TEXT;
+      ExecutedBy : MANDATORY TEXT;
+    END Modification;
+
+  END WaterNet_Modifications;
+
+  TOPIC WaterNet_WithModificationObjects =
+    OID AS INTERLIS.UUIDOID;
+    DEPENDS ON AdministrativeUnitsCH_V1.CHAgencies,CHBaseEx_MapCatalogue_V1.MapCatalogue_WithLatestModification,CHBaseEx_WaterNet_V1.WaterNet_Modifications,WithModificationObjects_V1.Modifications;
+
+    STRUCTURE ModInfo
+    EXTENDS WithModificationObjects_V1.ModInfo =
+    END ModInfo;
+
+    STRUCTURE WaterSymbolGraphic
+    EXTENDS GraphicCHLV03_V1.SymbolGraphic =
+      MapKind : CHBaseEx_MapCatalogue_V1.MapCatalogue_WithLatestModification.MapKindRef;
+    END WaterSymbolGraphic;
+
+    STRUCTURE WaterTextGraphic
+    EXTENDS GraphicCHLV03_V1.TextGraphic =
+      MapKind : CHBaseEx_MapCatalogue_V1.MapCatalogue_WithLatestModification.MapKindValue;
+      EXISTENCE CONSTRAINT MapKind REQUIRED IN CHBaseEx_MapCatalogue_V1.MapCatalogue_WithLatestModification.MapKind:Value;
+    END WaterTextGraphic;
+
+    CLASS Source =
+      Modification : CHBaseEx_WaterNet_V1.WaterNet_WithModificationObjects.ModInfo;
+      Position : GeometryCHLV03_V1.Coord2;
+      Position_Accuracy : GeometryCHLV03_V1.Accuracy;
+      Graphic : CHBaseEx_WaterNet_V1.WaterNet_WithModificationObjects.WaterSymbolGraphic;
+      Depiction (TRANSIENT) : ATTRIBUTE:= >>Position;
+    END Source;
+
+    CLASS River =
+      Modification : CHBaseEx_WaterNet_V1.WaterNet_WithModificationObjects.ModInfo;
+      Name : LocalisationCH_V1.MultilingualText;
+      Geometry : GeometryCHLV03_V1.DirectedLine;
+      Geometry_Accuracy : GeometryCHLV03_V1.Accuracy;
+      Graphic : BAG {0..*} OF CHBaseEx_WaterNet_V1.WaterNet_WithModificationObjects.WaterTextGraphic;
+      Depiction (TRANSIENT) : ATTRIBUTE:= >>Name;
+    END River;
+
+    CLASS Lake =
+      Modification : CHBaseEx_WaterNet_V1.WaterNet_WithModificationObjects.ModInfo;
+      Geometry : GeometryCHLV03_V1.SurfaceWithOverlaps2mm;
+      Geometry_Accuracy : GeometryCHLV03_V1.Accuracy;
+    END Lake;
+
+    ASSOCIATION Water_Net =
+      connect -- {0..*} Source
+         OR Lake
+         OR River
+      ;
+      with -- {0..*} River
+         OR Lake
+      ;
+      Modification : CHBaseEx_WaterNet_V1.WaterNet_WithModificationObjects.ModInfo;
+    END Water_Net;
+
+    ASSOCIATION QualityControlAuthority =
+      watersubject -- {0..*} Source
+         OR River
+         OR Lake
+      ;
+      controller (EXTERNAL) -- {0..1} AdministrativeUnitsCH_V1.CHAgencies.Agency;
+    END QualityControlAuthority;
+
+  END WaterNet_WithModificationObjects;
+
+  TOPIC LakeNames
+  EXTENDS DictionariesCH_V1.Dictionaries =
+    DEPENDS ON DictionariesCH_V1.Dictionaries,CHBaseEx_WaterNet_V1.WaterNet_WithModificationObjects;
+
+    STRUCTURE LakeName
+    EXTENDS Dictionaries_V1.Dictionaries.Entry =
+      Ref : MANDATORY REFERENCE TO (EXTERNAL) CHBaseEx_WaterNet_V1.WaterNet_WithModificationObjects.Lake;
+    END LakeName;
+
+    CLASS LakeNameTranslations
+    EXTENDS DictionariesCH_V1.Dictionaries.Dictionary =
+      Entries (EXTENDED) : LIST {0..*} OF CHBaseEx_WaterNet_V1.LakeNames.LakeName;
+    END LakeNameTranslations;
+
+  END LakeNames;
+
+END CHBaseEx_WaterNet_V1.
+
+!!@ technicalContact="models@geo.admin.ch"
+!!@ furtherInformation="http://www.geo.admin.ch/internet/geoportal/de/home/topics/geobasedata/models.html"
+MODEL CHBaseEx_Sewage_V1 (en)
+AT "http://www.geo.admin.ch"
+VERSION "2015-08-12"  =
+  IMPORTS GeometryCHLV03_V1,LocalisationCH_V1,CatalogueObjects_V1,AdministrativeUnits_V1,AdministrativeUnitsCH_V1,WithOneState_V1,WithLatestModification_V1,GraphicCHLV03_V1,CHBaseEx_WaterNet_V1;
+
+  TOPIC SewageCatalogue_WithOneState
+  EXTENDS CatalogueObjects_V1.Catalogues =
+
+    DOMAIN
+
+      SewagePlantTypeValue = TEXT;
+
+    STRUCTURE ModInfo
+    EXTENDS WithOneState_V1.ModInfo =
+    END ModInfo;
+
+    CLASS SewagePlantType
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      Modification : CHBaseEx_Sewage_V1.SewageCatalogue_WithOneState.ModInfo;
+      Value : SewagePlantTypeValue;
+      UserText : LocalisationCH_V1.MultilingualText;
+      UNIQUE Value;
+    END SewagePlantType;
+
+    STRUCTURE SewagePlantTypeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) SewagePlantType;
+    END SewagePlantTypeRef;
+
+  END SewageCatalogue_WithOneState;
+
+  TOPIC Sewage_WithLatestModification =
+    OID AS INTERLIS.UUIDOID;
+    DEPENDS ON AdministrativeUnitsCH_V1.CHCantons,AdministrativeUnitsCH_V1.CHMunicipalities,AdministrativeUnitsCH_V1.CHAdministrativeUnions,CHBaseEx_WaterNet_V1.WaterNet_WithModificationObjects,AdministrativeUnits_V1.AdministrativeUnits,CHBaseEx_Sewage_V1.SewageCatalogue_WithOneState;
+
+    STRUCTURE ModInfo
+    EXTENDS WithLatestModification_V1.ModInfo =
+    END ModInfo;
+
+    CLASS SewagePlant =
+      Modification : CHBaseEx_Sewage_V1.Sewage_WithLatestModification.ModInfo;
+      Name : LocalisationCH_V1.MultilingualText;
+      Type : CHBaseEx_Sewage_V1.SewageCatalogue_WithOneState.SewagePlantTypeRef;
+      Site : GeometryCHLV03_V1.SurfaceWithOverlaps2mm;
+    END SewagePlant;
+
+    ASSOCIATION Recipient =
+      sewageplant -- {0..*} SewagePlant;
+      recipient (EXTERNAL) -- {1} CHBaseEx_WaterNet_V1.WaterNet_WithModificationObjects.River
+         OR CHBaseEx_WaterNet_V1.WaterNet_WithModificationObjects.Lake
+      ;
+    END Recipient;
+
+    ASSOCIATION SewageManagementAuthority =
+      authority (EXTERNAL) -<> {1} AdministrativeUnits_V1.AdministrativeUnits.AdministrativeElement;
+      sewageplant -- {0..*} SewagePlant;
+    END SewageManagementAuthority;
+
+  END Sewage_WithLatestModification;
+
+END CHBaseEx_Sewage_V1.
