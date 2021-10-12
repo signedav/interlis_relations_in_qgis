@@ -1,0 +1,48 @@
+INTERLIS 2.3;
+
+!!This model is to demonstrate the smart inheritance example from the presentation
+
+MODEL Building_Smart_Parking (de)
+AT "mailto:signedav@localhost"
+VERSION "2021-10-06"  =
+
+  TOPIC Building_Smart_Parking =
+
+    CLASS Building (ABSTRACT) =
+      Name : TEXT*20;
+      !!@ ili2db.dispName = "Number of Floors"
+      Number_of_Floors : MANDATORY 1 .. 100;
+    END Building;
+
+    !!@ ili2db.dispName = "Office Building"
+    CLASS Office_Building
+    EXTENDS Building =
+      !!@ ili2db.dispName = "Number of Companies / Organizations"
+      Number_of_Companies : MANDATORY 1 .. 100;
+    END Office_Building;
+
+    !!@ ili2db.dispName = "Residential Building"
+    CLASS Residential_Building
+    EXTENDS Building =
+      !!@ ili2db.dispName = "Number of Residents"
+      Number_of_Residents : MANDATORY 1 .. 1000;
+    END Residential_Building;
+
+    !!@ ili2db.dispName = "Public Office Building"
+    CLASS Public_Office_Building
+    EXTENDS Office_Building =
+      !!@ ili2db.dispName = "Name of Authority"
+      Authority : MANDATORY TEXT*255;
+    END Public_Office_Building;
+
+    CLASS Parking =
+    END Parking;
+
+    ASSOCIATION Parking_Building =
+      Parking -- {0..*} Parking;
+      Building -- {1} Building;
+    END Parking_Building;
+
+  END Building_Smart_Parking;
+
+END Building_Smart_Parking.

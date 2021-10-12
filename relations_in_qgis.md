@@ -266,7 +266,7 @@ Public_Office_Building.t_type: (
 - Concrete classes without concrete super class -> *New Class* strategy
 - All other classes -> *Super Class* strategy
 
-<!-- Maybe graphic how it looks like -->
+Means in our example the `Building` uses *New Class* and all others *Super Class* strategy. This results in what we see in the *Super Class* graphic.
 
 ---
 
@@ -274,8 +274,7 @@ Public_Office_Building.t_type: (
 -  Abstract classes -> *Sub Class* strategy
 -  All concrete classes  -> *New + Sub Class* strategy
 
-<!-- Maybe graphic how it looks like -->
-
+Means in our example the `Building` uses *Sub Class* and all other *New+Sub Class*. This results in what we see in the *New+Sub Class* graphic.
 ---
 
 # Relations in QGIS
