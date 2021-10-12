@@ -66,10 +66,19 @@ StructureDef =  'STRUCTURE' Struct-Name '='
 ```
 **Example**
 ```
-STRUCTURE Parcel =
+STRUCTURE Address =
     StreetName : TEXT*40;
     Number : TEXT*12;
-END ParcelAddress;
+END Address;
+
+CLASS Building =
+    Position : Address;
+END Building;
+```
+```
+CLASS Building =
+    Position : BAG {0..*] OF Address;
+END Building;
 ```
 ---
 ## Types of classes
@@ -142,9 +151,14 @@ END;
 ---
 
 ## Strength
-- Association `--`: Relationship between independent objects
+- Association `--`: Relationship between independent objects. 
 - Aggregation `-<>`: Relationship between parts and a whole. A part can be part of multiple wholes.
 - Composition `-<#>`: Relationship between parts and a whole. A part can only be part of a single whole.
+
+<!-- **aggregation** all ascribed parts are automatically copied when copying the entity, however when
+deleting the entity the corresponding parts **remain untouched**. Compared to an aggregation you will
+find that a **composition** further implies, that when deleting the entity **all parts are deleted** at the
+same time.-->
 ---
 
 ## Attributes

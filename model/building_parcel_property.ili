@@ -63,22 +63,57 @@ VERSION "2021-10-06"  =
         unclassified
       );
 
-    CLASS Building (ABSTRACT) =
-      Geometrie : MANDATORY SURFACE WITH (ARCS,STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0;
-      !!@ ili2db.dispName = "Number of Floors"
-      Nr_of_Floors : MANDATORY 1 .. 100;
-      !!@ ili2db.dispName = "Ground-Plan Area of Building"
-      Area : MANDATORY 0 .. 100000;
-      !!@ ili2db.dispName = "Year of Construction"
-      Year_of_Construction : 1500 .. 2100;
-    END Building;
-
     CLASS Flat =
       !!@ ili2db.dispName = "Number of Rooms"
       Number_of_Rooms : MANDATORY 1 .. 50;
       !!@ ili2db.dispName = "Area (m2)"
       Area : 1 .. 10000 [Units.m2];
     END Flat;
+
+    STRUCTURE Heating =
+      !!@ ili2db.dispName = "Type of Heat Generation"
+      Heat_Generation_Type : MANDATORY (
+        combustion(
+          !!@ ili2db.dispName = "combustion - fossile"
+          fossile(
+            !!@ ili2db.dispName = "combustion - fossile (gaz / biogaz)"
+            gaz_biogaz,
+            !!@ ili2db.dispName = "combustion - fossile (oil)"
+            oil,
+            !!@ ili2db.dispName = "combustion - fossile (block heating station)"
+            block_heating_station
+          ),
+          !!@ ili2db.dispName = "combustion - renewable"
+          renewable(
+            !!@ ili2db.dispName = "combustion - renewable (wood log)"
+            wood_log,
+            !!@ ili2db.dispName = "combustion - renewable (pellet)"
+            pellet
+          ),
+          !!@ ili2db.dispName = "combustion - fuel cell"
+          fuel_cell
+        ),
+        !!@ ili2db.dispName = "heat pump"
+        heat_pump(
+          !!@ ili2db.dispName = "heat pump - air-water"
+          air_water,
+          !!@ ili2db.dispName = "heat pump - groundwater"
+          groundwater,
+          !!@ ili2db.dispName = "heat pump - earth register"
+          earth_register,
+          !!@ ili2db.dispName = "heat pump - ice storage"
+          ice_storage
+        ),
+        electric,
+        !!@ ili2db.dispName = "solar-thermal"
+        solar_thermal,
+        other
+      );
+      !!@ ili2db.dispName = "Output (kWh)"
+      Output : 0 .. 1000 [Units.kWh];
+      !!@ ili2db.dispName = "Date of commissioning"
+      Date_Commissioning : FORMAT INTERLIS.XMLDate "1800-1-1" .. "2100-1-1";
+    END Heating;
 
     CLASS Office =
       !!@ ili2db.dispName = "Number of Bureaus"
@@ -96,13 +131,16 @@ VERSION "2021-10-06"  =
       BFS_Nr : MANDATORY CHAdminCodes_V1.CHMunicipalityCode;
     END Parcel;
 
-    CLASS Office_Building
-    EXTENDS Building =
-      !!@ ili2db.dispName = "Number of Companies / Organizations"
-      Number_of_CompaniesOrganizations : MANDATORY 1 .. 100;
-      !!@ ili2db.dispName = "Building Security Level"
-      Building_Security_Level : MANDATORY Security_Level;
-    END Office_Building;
+    CLASS Building (ABSTRACT) =
+      Geometrie : MANDATORY SURFACE WITH (ARCS,STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0;
+      !!@ ili2db.dispName = "Number of Floors"
+      Nr_of_Floors : MANDATORY 1 .. 100;
+      !!@ ili2db.dispName = "Ground-Plan Area of Building"
+      Area : MANDATORY 0 .. 100000;
+      !!@ ili2db.dispName = "Year of Construction"
+      Year_of_Construction : 1500 .. 2100;
+      Heating : MANDATORY Building_Parcel_Property.Building_Parcel_Property.Heating;
+    END Building;
 
     CLASS Person =
       !!@ ili2db.dispName = "AHV-Nr"
@@ -119,6 +157,16 @@ VERSION "2021-10-06"  =
       Gender : MANDATORY Gender;
     END Person;
 
+    !!@ ili2db.dispName = "Office Building"
+    CLASS Office_Building
+    EXTENDS Building =
+      !!@ ili2db.dispName = "Number of Companies / Organizations"
+      Number_of_CompaniesOrganizations : MANDATORY 1 .. 100;
+      !!@ ili2db.dispName = "Building Security Level"
+      Building_Security_Level : MANDATORY Security_Level;
+    END Office_Building;
+
+    !!@ ili2db.dispName = "Residential Building"
     CLASS Residential_Building
     EXTENDS Building =
       !!@ ili2db.dispName = "Number of Flats"
@@ -132,6 +180,16 @@ VERSION "2021-10-06"  =
       Parcel -- {1} Parcel;
     END Building_Parcel;
 
+    ASSOCIATION Property =
+      Person -- {1..*} Person;
+      Parcel -- {0..*} Parcel;
+      !!@ ili2db.dispName = "Property Type"
+      Property_Type : MANDATORY Property_Type;
+      !!@ ili2db.dispName = "Ownership-Share (Percent)"
+      Ownership_Share : MANDATORY 0 .. 100 [Units.Percent];
+    END Property;
+
+    !!@ ili2db.dispName = "Public Office Building"
     CLASS Public_Office_Building
     EXTENDS Office_Building =
       !!@ ili2db.dispName = "Name of Authority"
@@ -149,15 +207,6 @@ VERSION "2021-10-06"  =
       Office -- {1..*} Office;
       OfficeBuilding -<#> {1} Office_Building;
     END Office_OfficeBuilding;
-
-    ASSOCIATION Property =
-      Person -- {1..*} Person;
-      Parcel -- {0..*} Parcel;
-      !!@ ili2db.dispName = "Property Type"
-      Property_Type : MANDATORY Property_Type;
-      !!@ ili2db.dispName = "Ownership-Share (Percent)"
-      Ownership_Share : MANDATORY 0 .. 100 [Units.Percent];
-    END Property;
 
   END Building_Parcel_Property;
 
