@@ -17,7 +17,7 @@ How INTERLIS associations and inheritances are handled as QGIS relations
 # Andreas Neumann
 #### Kanton Solothurn
 QGIS PSC Member
-Super QGIS Users
+QGIS Power User
 QGIS Model Baker Group
 # David Signer
 #### OPENGIS.ch
@@ -179,7 +179,7 @@ END;
 <!-- Go through the ili model -->
 ---
 
-# Inharitance mapping
+# Inheritance mapping
 - New Class
 - Super Class
 - Sub Class
