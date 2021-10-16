@@ -64,9 +64,12 @@ VERSION "2021-10-06"  =
       );
 
     CLASS Flat =
+      EWID : MANDATORY 1 .. 200;
+      !!@ ili2db.dispName = "Floor"
+      Floor : MANDATORY -5 .. 100;
       !!@ ili2db.dispName = "Number of Rooms"
       Number_of_Rooms : MANDATORY 1 .. 50;
-      !!@ ili2db.dispName = "Area (m2)"
+      !!@ ili2db.dispName = "Area"
       Area : 1 .. 10000 [Units.m2];
     END Flat;
 
@@ -116,8 +119,10 @@ VERSION "2021-10-06"  =
     END Heating;
 
     CLASS Office =
-      !!@ ili2db.dispName = "Number of Bureaus"
-      Number_of_Bureaus : MANDATORY 1 .. 1000;
+      !!@ ili2db.dispName = "Floor"
+      Floor : MANDATORY -10 .. 100;
+      !!@ ili2db.dispName = "Number of Rooms/Bureaus"
+      Number_of_Rooms : MANDATORY 1 .. 1000;
       Area : 1 .. 100000 [Units.m2];
     END Office;
 
@@ -132,11 +137,17 @@ VERSION "2021-10-06"  =
     END Parcel;
 
     CLASS Building (ABSTRACT) =
-      Geometrie : MANDATORY SURFACE WITH (ARCS,STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0;
+      !!@ ili2db.dispName = "Building Insurance Number"
+      Insurance_Number : MANDATORY 1 .. 100000;
+      !!@ ili2db.dispName = "BFS-Nr"
+      BFS_Nr : MANDATORY CHAdminCodes_V1.CHMunicipalityCode;
+      !!@ ili2db.dispName = "Official building nr (EGID)"
+      EGID : MANDATORY 1000000 .. 999999999;
+      Geometry : MANDATORY SURFACE WITH (ARCS,STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0;
       !!@ ili2db.dispName = "Number of Floors"
       Nr_of_Floors : MANDATORY 1 .. 100;
       !!@ ili2db.dispName = "Ground-Plan Area of Building"
-      Area : MANDATORY 0 .. 100000;
+      Area : MANDATORY 0 .. 100000 [Units.m2];
       !!@ ili2db.dispName = "Year of Construction"
       Year_of_Construction : 1500 .. 2100;
       Heating : MANDATORY Building_Parcel_Property.Building_Parcel_Property.Heating;
@@ -185,7 +196,7 @@ VERSION "2021-10-06"  =
       Parcel -- {0..*} Parcel;
       !!@ ili2db.dispName = "Property Type"
       Property_Type : MANDATORY Property_Type;
-      !!@ ili2db.dispName = "Ownership-Share (Percent)"
+      !!@ ili2db.dispName = "Ownership-Share"
       Ownership_Share : MANDATORY 0 .. 100 [Units.Percent];
     END Property;
 
