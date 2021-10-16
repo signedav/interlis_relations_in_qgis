@@ -124,14 +124,14 @@ END CLASS Office_Building;
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-class="invert" data-paginate="true" data-theme="default" class="invert" data-marpit-pagination="12" data-marpit-pagination-total="25" style="--class:invert;--paginate:true;--theme:default;">
 <h2>Cardinality</h2>
 <h3>one-to-many</h3>
-<p>A building belongs to exactly one parcel. A parcel can have multiple buildings.</p>
+<p>A building belongs to <strong>exactly one</strong> parcel. A parcel <strong>can</strong> have <strong>multiple</strong> buildings.</p>
 <pre><code><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>ASSOCIATION =
     local_buildings -- {0..*} Building;
     parcel -- {1} Parcel;
 END;
 </span></span></foreignObject></svg></code></pre>
 <h3>many-to-many</h3>
-<p>A building belongs to exactly one parcel. A parcel can have multiple buildings.</p>
+<p>A building belongs to <strong>at least one</strong> parcel. A parcel <strong>can</strong> have <strong>multiple</strong> buildings.</p>
 <pre><code><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>ASSOCIATION Property =
     Person -- {1..*} Person;
     Parcel -- {0..*} Parcel;
