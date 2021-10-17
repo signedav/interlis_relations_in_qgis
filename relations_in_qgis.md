@@ -131,7 +131,7 @@ END CLASS Office_Building;
 ## Cardinality
 
 ### one-to-many
-A building belongs to exactly one parcel. A parcel can have multiple buildings.
+A building belongs to **exactly one** parcel. A parcel **can** have **multiple** buildings.
 
 ```
 ASSOCIATION =
@@ -140,7 +140,7 @@ ASSOCIATION =
 END;
 ```
 ### many-to-many
-A building belongs to exactly one parcel. A parcel can have multiple buildings.
+A building belongs to **at least one** parcel. A parcel **can** have **multiple** buildings.
 
 ```
 ASSOCIATION Property =
