@@ -20,7 +20,7 @@ QGIS PSC Member
 QGIS Power User
 QGIS Model Baker Group
 # David Signer
-#### OPENGIS.ch
+#### OPENGISch
 Software Engineer
 QGIS Core Comitter
 QGIS Model Baker Coordinator
@@ -70,15 +70,6 @@ STRUCTURE Address =
     StreetName : TEXT*40;
     Number : TEXT*12;
 END Address;
-
-CLASS Building =
-    Position : Address;
-END Building;
-```
-```
-CLASS Building =
-    Position : BAG {0..*] OF Address;
-END Building;
 ```
 ---
 ## Types of classes
@@ -120,6 +111,20 @@ END CLASS Office_Building;
 ```
 ```
 !! Error: Building cannot be extended
+```
+---
+## Extending Structures
+```
+STRUCTURE AddressBase (ABSTRACT) =
+    StreetName : TEXT*40;
+    Number : TEXT*12;
+END AddressBase;
+
+CLASS Address
+    EXTENDS AddressBase =
+    PLZ : TEXT*6;
+    Remarks : TEXT;
+END CLASS Address;
 ```
 ---
 
@@ -171,6 +176,25 @@ ASSOCIATION Property =
 END;
 ```
 ---
+## Structures
+
+```
+STRUCTURE Address =
+    StreetName : TEXT*40;
+    Number : TEXT*12;
+END Address;
+
+CLASS Building =
+    Position : Address;
+END Building;
+```
+Normaly used with `LIST` or `BAG .. OF`
+```
+CLASS Building =
+    Position : BAG {0..*] OF Address;
+END Building;
+```
+---
 
 # Example Model [`Building_Parcel_Property`](./model/building_parcel_property.ili)
 
@@ -194,8 +218,12 @@ END;
 <!-- Mention that Parking is not Parcel -->
 
 ---
+## New Class (1)
 
-## New Class
+![bg right 80%](./assets/new_class_surreal.png)
+
+---
+## New Class (2)
 ```
 Building.t_type: (
     Residental_Building,
