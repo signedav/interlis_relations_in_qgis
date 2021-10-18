@@ -32,8 +32,9 @@ QGIS Model Baker Coordinator
 - INTERLIS Classes
 - INTERLIS Associations
 - Check the INTERLIS Model
-- Inheritancs in Physical Models
+- Inheritance in Physical Models
 - Associations in QGIS
+- Widgets for handling relations in QGIS
 
 ---
 
@@ -172,6 +173,29 @@ END;
 ```
 ---
 
+## Cross Topic Associations (1)
+A topic that references a class from another topic must have a dependency on the other topic. In the association, one has to use the keyword "EXTERNAL".
+```
+  TOPIC Parcel =
+    DEPENDS ON Building_Parcel_Property.Person;
+
+    ASSOCIATION Property =
+      Person (EXTERNAL) -- {1..*} Building_Parcel_Property.Person.Person;
+      Parcel -- {0..*} Parcel;
+      property_type : MANDATORY Building_Parcel_Property.Property_Type;
+      ownership_share : MANDATORY 0 .. 100 [Units.Percent];
+    END Property;
+```
+
+## Cross Topic Associations (2)
+Cross topic associations in UML-Editor:
+
+![](./assets/cross_topic_associations1.png)
+
+![](./assets/cross_topic_associations2.png)
+
+---
+
 # Example Model [`Building_Parcel_Property`](./model/building_parcel_property.ili)
 
 ![](./assets/building_parcel_property_ER-Diagramm.png)
@@ -179,7 +203,7 @@ END;
 <!-- Go through the ili model -->
 ---
 
-# Inharitance mapping
+# Inheritance mapping
 - New Class
 - Super Class
 - Sub Class
