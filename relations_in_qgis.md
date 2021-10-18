@@ -211,6 +211,8 @@ A topic that references a class from another topic must have a dependency on the
     END Property;
 ```
 
+---
+
 ## Cross Topic Associations (2)
 Cross topic associations in UML-Editor:
 
@@ -342,10 +344,14 @@ Means in our example the `Building` uses *Sub Class* and all other *New+Sub Clas
 ---
 
 ## Relation Management in QGIS
-- QGIS offers the followin widgets suitable for managing related classes
-    - "Relation Reference" Widget (combobox), suitable for 1:n (or 1:1) relations
-    - "Value Relation" Widget (combobox), suitable for domains with key/value columns and a description shown with tooltips
-    - "Relation" Widget (nested embedded form from related table), suitable for n:m relations.
+QGIS offers the followin widgets suitable for managing related classes
+-  "Relation Reference" Widget (combobox), suitable for n:1 (or 1:1) relations.
+    -  Example: Building matches exactly one parcel.
+-  "Value Relation" Widget (combobox), suitable for domains with key/value columns and a description shown with tooltips.
+    -  Example: security level of an office building.
+- "Relation" Widget (nested embedded form from related table), suitable for 1:n and n:m relations.
+    -  Example: One parcel links to many buildings (1:n)
+    -  Example: a parcel has multiple owners (n:m), an owner can own multiple parcels.
 
 ---
 
@@ -383,3 +389,30 @@ Means in our example the `Building` uses *Sub Class* and all other *New+Sub Clas
 ### Value Relation Widget (2) - Configuration
 
 ![](./assets/value_relation_widget_2_configuration.png)
+
+---
+
+### Relation Widget (1) - Look and Feel
+- For 1:n and n:m relations
+- With embedded form and side list panel to step through related objects
+- for n:m relations the in between table can be hidden if there are no attributes on the association
+
+![](./assets/relation_widget_1.png)
+
+---
+
+### Relation Widget (2) - Configuration
+
+![](./assets/relation_widget_2_configuration.png)
+
+---
+
+### Relation Widget (3) - Cardinality
+
+TODO
+
+---
+
+### Relation Widget (4) - Known issues
+- Update issues in side list panel when data changes in a child form
+- Multiple nested forms (xx-levels deep)
