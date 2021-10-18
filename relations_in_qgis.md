@@ -214,9 +214,9 @@ A topic that references a class from another topic must have a dependency on the
 ## Cross Topic Associations (2)
 Cross topic associations in UML-Editor:
 
-![](./assets/cross_topic_associations1.png)
+![](./assets/cross_topic_associations_1.png)
 
-![](./assets/cross_topic_associations2.png)
+![](./assets/cross_topic_associations_2.png)
 
 ---
 
@@ -327,6 +327,13 @@ Means in our example the `Building` uses *New Class* and all others *Super Class
 -  All concrete classes  -> *New + Sub Class* strategy
 
 Means in our example the `Building` uses *Sub Class* and all other *New+Sub Class*. This results in what we see in the *New+Sub Class* graphic.
+
 ---
 
 # Relations in QGIS
+
+## Relation Management in QGIS
+-  Relations can be added or removed in menu "Project" --> "Properties" --> "Relations".
+-  QGIS ModelBaker generates the relations automatically from you, derived from the Interlis model (through ili2pg)
+
+![](./assets/relation_manager_qgis.png)
