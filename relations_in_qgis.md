@@ -350,7 +350,7 @@ Means in our example the `Building` uses *Sub Class* and all other *New+Sub Clas
 ---
 
 ### Relation Reference Widget (1) - Look and Feel
-- For 1:n or 1:1 relations
+- For 0..1:n or 1:1 relations
 - Allows to select related features with a combobox displaying an expression with a combination of one or more attributes
 - Choice of related object can be done either with combobox or by clicking a related object on the map
 - Optionally allows to create a new related feature
@@ -365,3 +365,21 @@ Means in our example the `Building` uses *Sub Class* and all other *New+Sub Clas
 ![](./assets/relation_reference_widget_2_configuration.png)
 
 ---
+
+### Relation Reference Widget (3) - Known issues
+- Picking elements on map only works for top-level forms and not for nested forms ;-(
+
+---
+
+### Value Relation Widget (1) - Look and Feel
+- For selecting domain values
+- With key/value pairs
+- Optionally display a description of the value in a tooltip
+
+![](./assets/value_relation_widget_1.png)
+
+---
+
+### Value Relation Widget (2) - Configuration
+
+![](./assets/value_relation_widget_2_configuration.png)
