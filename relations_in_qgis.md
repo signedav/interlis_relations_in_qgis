@@ -224,9 +224,12 @@ A topic that references a class from another topic must have a dependency on the
 ## Cross Topic Associations (2)
 Cross topic associations in UML-Editor:
 
-![](./assets/cross_topic_associations1.png)
+![](./assets/cross_topic_associations_1.png)
 
-![](./assets/cross_topic_associations2.png)
+---
+## Cross Topic Associations (3)
+
+![](./assets/cross_topic_associations_2.png)
 
 ---
 
