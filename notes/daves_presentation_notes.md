@@ -57,3 +57,7 @@ Like flat and its rooms.
 
 #### Structures
 It's similar to a one-to-many composition. As opposed to the definition of a composition by means of the association class, with a structure attribute structure elements cannot be referenced, i.e. outside of the object to whose structure attribute value belong to, they have no identity.
+
+#### Usabilityhub
+
+https://app.clickup.com/2192114/v/dc/22wqj-2899/22wqj-687

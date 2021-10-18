@@ -240,12 +240,19 @@ Cross topic associations in UML-Editor:
 <!-- Go through the ili model -->
 ---
 
-# The model in QGIS
+# Let's have a look in QGIS
 - ili2db creates the physical Database
 - QGIS Model Baker generates the project
-- With UsabILIty Hub preconfigured Settings and Stylings can be received from the Repository
----
 
+---
+# UsabILIty Hub
+The idea of the UsabILItyHub is to receive meta data like ili2db settings, layer styles and orders etc. automatically over the web. 
+
+Like we can now receive models by connecting the ilimodels.xml of http://models.interlis.ch and with it's ilisite.xml many other repositories, we will be able to get this meta data with the file ilidata.xml on the UsabILItyHub usabilityhub.opengis.ch
+
+Find more information (in German) at https://usabilityhub.opengis.ch/
+
+---
 # Inheritance mapping
 - New Class
 - Super Class
@@ -282,6 +289,10 @@ Building.t_type: (
 
 ---
 
+## Sample Model
+
+![bg right 80%](./assets/sample_model.png)---
+
 ## Super Class
 ```
 Building.t_type: (
@@ -297,6 +308,11 @@ Building.t_type: (
 
 ---
 
+## Sample Model
+
+![bg right 80%](./assets/sample_model.png)
+---
+
 ## Sub Class
 ```
 Public_Office_Building.t_type: (
@@ -308,6 +324,11 @@ Public_Office_Building.t_type: (
 
 ![bg right 80%](./assets/sub_class.png)
 
+---
+
+## Sample Model
+
+![bg right 80%](./assets/sample_model.png)
 ---
 
 ## New + Sub Class
@@ -329,6 +350,14 @@ Public_Office_Building.t_type: (
 <!-- Maybe graphic how it looks like -->
 ---
 
+## noSmartMapping
+
+Results in what we see in *New Class* graphic.
+
+![bg right 80%](./assets/new_class.png)
+
+---
+
 ## smart1Inheritance
 
 - Abstract classes without associations -> *Sub Class* strategy
@@ -336,7 +365,13 @@ Public_Office_Building.t_type: (
 - Concrete classes without concrete super class -> *New Class* strategy
 - All other classes -> *Super Class* strategy
 
+---
+
+## smart1Inheritance
+
 Means in our example the `Building` uses *New Class* and all others *Super Class* strategy. This results in what we see in the *Super Class* graphic.
+
+![bg right 80%](./assets/super_class.png)
 
 ---
 
@@ -344,7 +379,12 @@ Means in our example the `Building` uses *New Class* and all others *Super Class
 -  Abstract classes -> *Sub Class* strategy
 -  All concrete classes  -> *New + Sub Class* strategy
 
+---
+
+## smart2Inheritance
 Means in our example the `Building` uses *Sub Class* and all other *New+Sub Class*. This results in what we see in the *New+Sub Class* graphic.
+
+![bg right 80%](./assets/new_sub_class.png)
 ---
 
 # Relations in QGIS
