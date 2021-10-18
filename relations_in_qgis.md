@@ -82,10 +82,13 @@ END Address;
 ## Concrete Classes
 ```
 CLASS Building =
+    Name : TEXT*20;
+    Nr_of_Floors : MANDATORY 1 .. 100;
 END Building;
 
 CLASS Office_Building
     EXTENDS Building =
+    Nr_of_Companies : MANDATORY 1 .. 200;
 END CLASS Office_Building;
 ```
 ---
@@ -93,10 +96,13 @@ END CLASS Office_Building;
 ## Abstract Classes
 ```
 CLASS Building (ABSTRACT) =
+    Name : TEXT*20;
+    Nr_of_Floors : MANDATORY 1 .. 100;
 END Building;
 
 CLASS Office_Building
     EXTENDS Building =
+    Nr_of_Companies : MANDATORY 1 .. 200;
 END CLASS Office_Building;
 ```
 ---
@@ -104,10 +110,13 @@ END CLASS Office_Building;
 ## Final Classes
 ```
 CLASS Building (FINAL) =
+    Name : TEXT*20;
+    Nr_of_Floors : MANDATORY 1 .. 100;
 END Building;
 
 CLASS Office_Building
     EXTENDS Building =
+    Nr_of_Companies : MANDATORY 1 .. 200;
 END CLASS Office_Building;
 ```
 ```
@@ -146,7 +155,7 @@ ASSOCIATION =
 END;
 ```
 ### many-to-many
-A building belongs to **at least one** parcel. A parcel **can** have **multiple** buildings.
+A parcel is owned by **at least one** person. A person **can** own parts of **multiple** parcels.
 
 ```
 ASSOCIATION Property =
@@ -189,10 +198,10 @@ CLASS Building =
     Position : Address;
 END Building;
 ```
-Normaly used with `LIST` or `BAG .. OF`
+Possible to use with `LIST` or `BAG .. OF`
 ```
 CLASS Building =
-    Position : BAG {0..*] OF Address;
+    Position : BAG {0..*} OF Address;
 END Building;
 ```
 ---
@@ -211,6 +220,7 @@ A topic that references a class from another topic must have a dependency on the
     END Property;
 ```
 
+---
 ## Cross Topic Associations (2)
 Cross topic associations in UML-Editor:
 
@@ -225,6 +235,12 @@ Cross topic associations in UML-Editor:
 ![](./assets/building_parcel_property_ER-Diagramm.png)
 
 <!-- Go through the ili model -->
+---
+
+# The model in QGIS
+- ili2db creates the physical Database
+- QGIS Model Baker generates the project
+- With UsabILIty Hub preconfigured Settings and Stylings can be received from the Repository
 ---
 
 # Inheritance mapping
@@ -258,7 +274,6 @@ Building.t_type: (
 - Specializations are mapped as associations
 - Multiple inserts and updates required per object
 - Not null attributes can be setted
-- Referential integrity is respected
 
 ![bg right 80%](./assets/new_class.png)
 
@@ -293,8 +308,8 @@ Public_Office_Building.t_type: (
 ---
 
 ## New + Sub Class
+- IMO the expected behavior
 - Missing not null constraints
-- Referential integrity is respected
 
 ![bg right 80%](./assets/new_sub_class.png)
 
