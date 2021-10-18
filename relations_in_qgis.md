@@ -221,13 +221,11 @@ A topic that references a class from another topic must have a dependency on the
 ```
 
 ---
+
 ## Cross Topic Associations (2)
 Cross topic associations in UML-Editor:
 
 ![](./assets/cross_topic_associations_1.png)
-
----
-## Cross Topic Associations (3)
 
 ![](./assets/cross_topic_associations_2.png)
 
@@ -385,6 +383,90 @@ Means in our example the `Building` uses *New Class* and all others *Super Class
 Means in our example the `Building` uses *Sub Class* and all other *New+Sub Class*. This results in what we see in the *New+Sub Class* graphic.
 
 ![bg right 80%](./assets/new_sub_class.png)
+
 ---
 
 # Relations in QGIS
+
+## Relation Management in QGIS
+-  Relations can be added or removed in menu "Project" --> "Properties" --> "Relations".
+-  QGIS ModelBaker generates the relations automatically from you, derived from the Interlis model (through ili2pg)
+-  Unfortunately, already existing relations cannot be change anymore (e.g. changing the strength)
+
+![](./assets/relation_manager_qgis.png)
+
+---
+
+## Relation Management in QGIS
+QGIS offers the followin widgets suitable for managing related classes
+-  "Relation Reference" Widget (combobox), suitable for n:1 (or 1:1) relations.
+    -  Example: Building matches exactly one parcel.
+-  "Value Relation" Widget (combobox), suitable for domains with key/value columns and a description shown with tooltips.
+    -  Example: security level of an office building.
+- "Relation" Widget (nested embedded form from related table), suitable for 1:n and n:m relations.
+    -  Example: One parcel links to many buildings (1:n)
+    -  Example: a parcel has multiple owners (n:m), an owner can own multiple parcels.
+
+---
+
+### Relation Reference Widget (1) - Look and Feel
+- For 0..1:n or 1:1 relations
+- Allows to select related features with a combobox displaying an expression with a combination of one or more attributes
+- Choice of related object can be done either with combobox or by clicking a related object on the map
+- Optionally allows to create a new related feature
+- Optionally displays the form of the related feature, either embedded or in a separate window
+
+![](./assets/relation_reference_widget_1.png)
+
+---
+
+### Relation Reference Widget (2) - Configuration
+
+![](./assets/relation_reference_widget_2_configuration.png)
+
+---
+
+### Relation Reference Widget (3) - Known issues
+- Picking elements on map only works for top-level forms and not for nested forms ;-(
+
+---
+
+### Value Relation Widget (1) - Look and Feel
+- For selecting domain values
+- With key/value pairs
+- Optionally display a description of the value in a tooltip
+
+![](./assets/value_relation_widget_1.png)
+
+---
+
+### Value Relation Widget (2) - Configuration
+
+![](./assets/value_relation_widget_2_configuration.png)
+
+---
+
+### Relation Widget (1) - Look and Feel
+- For 1:n and n:m relations
+- With embedded form and side list panel to step through related objects
+- for n:m relations the in between table can be hidden if there are no attributes on the association
+
+![](./assets/relation_widget_1.png)
+
+---
+
+### Relation Widget (2) - Configuration
+
+![](./assets/relation_widget_2_configuration.png)
+
+---
+
+### Relation Widget (3) - Cardinality
+
+TODO
+
+---
+
+### Relation Widget (4) - Known issues
+- Update issues in side list panel when data changes in a child form
+- Multiple nested forms (xx-levels deep)
