@@ -335,5 +335,33 @@ Means in our example the `Building` uses *Sub Class* and all other *New+Sub Clas
 ## Relation Management in QGIS
 -  Relations can be added or removed in menu "Project" --> "Properties" --> "Relations".
 -  QGIS ModelBaker generates the relations automatically from you, derived from the Interlis model (through ili2pg)
+-  Unfortunately, already existing relations cannot be change anymore (e.g. changing the strength)
 
 ![](./assets/relation_manager_qgis.png)
+
+---
+
+## Relation Management in QGIS
+- QGIS offers the followin widgets suitable for managing related classes
+    - "Relation Reference" Widget (combobox), suitable for 1:n (or 1:1) relations
+    - "Value Relation" Widget (combobox), suitable for domains with key/value columns and a description shown with tooltips
+    - "Relation" Widget (nested embedded form from related table), suitable for n:m relations.
+
+---
+
+### Relation Reference Widget (1) - Look and Feel
+- For 1:n or 1:1 relations
+- Allows to select related features with a combobox displaying an expression with a combination of one or more attributes
+- Choice of related object can be done either with combobox or by clicking a related object on the map
+- Optionally allows to create a new related feature
+- Optionally displays the form of the related feature, either embedded or in a separate window
+
+![](./assets/relation_reference_widget_1.png)
+
+---
+
+### Relation Reference Widget (2) - Configuration
+
+![](./assets/relation_reference_widget_2_configuration.png)
+
+---
