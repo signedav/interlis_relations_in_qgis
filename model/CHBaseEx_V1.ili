@@ -97,8 +97,8 @@ VERSION "2015-08-12"  =
 
     ASSOCIATION Water_Net =
       connect -- {0..*} Source
-         OR Lake
          OR River
+         OR Lake
       ;
       with -- {0..*} River
          OR Lake
@@ -108,8 +108,8 @@ VERSION "2015-08-12"  =
 
     ASSOCIATION QualityControlAuthority =
       watersubject -- {0..*} Source
-         OR River
          OR Lake
+         OR River
       ;
       controller (EXTERNAL) -- {0..1} AdministrativeUnitsCH_V1.CHAgencies.Agency;
     END QualityControlAuthority;
