@@ -154,16 +154,14 @@ VERSION "2021-10-06"  =
     END Building;
 
     CLASS Person =
-      !!@ ili2db.dispName = "AHV-Nr"
-      AHV_Nr : MANDATORY 7560000000000 .. 7569999999999;
-      !!@ ili2db.dispName = "Birthdate"
-      Birth_Date : MANDATORY FORMAT INTERLIS.XMLDate "1800-1-1" .. "2100-1-1";
       !!@ ili2db.dispName = "Family Name"
       Name : MANDATORY TEXT*255;
       !!@ ili2db.dispName = "Middle Name(s)"
       Middle_Names : TEXT*255;
       !!@ ili2db.dispName = "First Name"
       First_Name : MANDATORY TEXT*255;
+      !!@ ili2db.dispName = "Birthdate"
+      Birth_Date : MANDATORY FORMAT INTERLIS.XMLDate "1800-1-1" .. "2100-1-1";
       !!@ ili2db.dispName = "Gender"
       Gender : MANDATORY Gender;
     END Person;
