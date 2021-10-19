@@ -1,3 +1,9 @@
+### Open links
+https://signedav.github.io/interlis_relations_in_qgis
+https://models.interlis.ch/
+https://models.opengis.ch/
+https://usabilityhub.opengis.ch/
+
 ### Ablauf
 
 - Begrüssung (A)
@@ -57,3 +63,13 @@ Like flat and its rooms.
 
 #### Structures
 It's similar to a one-to-many composition. As opposed to the definition of a composition by means of the association class, with a structure attribute structure elements cannot be referenced, i.e. outside of the object to whose structure attribute value belong to, they have no identity.
+
+#### Usabilityhub
+
+https://app.clickup.com/2192114/v/dc/22wqj-2899/22wqj-687
+
+1. Erkläre was auf Slide auch steht (abstract)
+2. Zeige ilimodel / ilisites und ilidata
+3. Gehe auf Website und erkläre die Grafik
+4. Zeige in Model Baker mit Kbs + gehe auf die Repos und zeige die Files
+5. Zeigs bei unserem Building-Parcel Beispiel
