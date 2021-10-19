@@ -490,6 +490,9 @@ QGIS offers the followin widgets suitable for managing related classes
 -  For Assocations you have to first unlink related objects before removing and object that contains references
 -  Referenced structures: treated like Assocations, you also manually need to unlink objects first
 
+![](./assets/cascading_delete_qgis.png)
+
+
 ---
 
 ### Cascading Deletion in Postgis
