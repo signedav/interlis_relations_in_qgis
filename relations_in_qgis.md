@@ -370,11 +370,11 @@ QGIS offers the followin widgets suitable for managing related classes
 ---
 
 ### Relation Reference Widget (1) - Look and Feel
-- For 0..1:n or 1:1 relations
-- Allows to select related features with a combobox displaying an expression with a combination of one or more attributes
-- Choice of related object can be done either with combobox or by clicking a related object on the map
-- Optionally allows to create a new related feature
-- Optionally displays the form of the related feature, either embedded or in a separate window
+-  For 0..1:n or 1:1 relations
+-  Allows to select related features with a combobox displaying an expression with a combination of one or more attributes
+-  Choice of related object can be done either with combobox or by clicking a related object on the map
+-  Optionally allows to create a new related feature
+-  Optionally displays the form of the related feature, either embedded or in a separate window
 
 ![](./assets/relation_reference_widget_1.png)
 
@@ -387,14 +387,14 @@ QGIS offers the followin widgets suitable for managing related classes
 ---
 
 ### Relation Reference Widget (3) - Known issues
-- Picking elements on map only works for top-level forms and not for nested forms ;-(
+-  Picking elements on map only works for top-level forms and not for nested forms ;-(
 
 ---
 
 ### Value Relation Widget (1) - Look and Feel
-- For selecting domain values
-- With key/value pairs
-- Optionally display a description of the value in a tooltip
+-  For selecting domain values
+-  With key/value pairs
+-  Optionally display a description of the value in a tooltip
 
 ![](./assets/value_relation_widget_1.png)
 
@@ -407,9 +407,9 @@ QGIS offers the followin widgets suitable for managing related classes
 ---
 
 ### Relation Widget (1) - Look and Feel
-- For 1:n and n:m relations
-- With embedded form and side list panel to step through related objects
-- for n:m relations the in between table can be hidden if there are no attributes on the association
+-  For 1:n and n:m relations
+-  With embedded form and side list panel to step through related objects
+-  for n:m relations the in between table can be hidden if there are no attributes on the association
 
 ![](./assets/relation_widget_1.png)
 
@@ -421,12 +421,45 @@ QGIS offers the followin widgets suitable for managing related classes
 
 ---
 
-### Relation Widget (3) - Cardinality
-
-TODO
+### Relation Widget (3) - Link/unlink vs Add/Remove/Duplicate
+-  Link and Unlink better suited for "Associations" (low strength)
+-  Add/Remove/Duplicate better suited for "Aggregations" and "Compositions" (higher strength)
 
 ---
 
-### Relation Widget (4) - Known issues
-- Update issues in side list panel when data changes in a child form
-- Multiple nested forms (xx-levels deep)
+### Relation Widget (4) - Cardinality
+-  For 1:n relations: choose "Many to one relation"
+-  For n:m relations: choose "Class Name (Primary Key)", e.g. "Person (t_id)" on both ends of the relation to hide the in-between table
+
+---
+
+### Relation Widget (5) - Known issues
+-  Update issues in side list panel when data changes in a child form
+-  Multiple nested forms (xx-levels deep)
+
+---
+
+## Cascading Deletion of related objects
+
+### Cascading Deletion in QGIS
+-  For Aggregation and Compositions: QGIS asks if you want to deletes related objects 
+-  For Assocations you have to first unlink related objects before removing and object that contains references
+-  Referenced structures: treated like Assocations, you also manually need to unlink objects first
+
+---
+
+### Cascading Deletion in Postgis
+-  use ON UPDATE and ON DELETE rules
+-  Possible values: "RESTRICT", "NO ACTION", "SET NULL", "SET DEFAULT" and "CASCADE"
+
+```
+ALTER TABLE building_parcel_property_smart2.heating
+DROP CONSTRAINT heating_office_building_heating_fkey;
+
+ALTER TABLE building_parcel_property_smart2.heating
+  ADD CONSTRAINT heating_office_building_heating_fkey FOREIGN KEY (office_building_heating)
+ REFERENCES building_parcel_property_smart2.office_building(t_id) 
+ ON UPDATE RESTRICT ON DELETE CASCADE
+ DEFERRABLE INITIALLY DEFERRED;
+
+```
