@@ -289,7 +289,7 @@ Building.t_type: (
 
 ## Sample Model
 
-![bg right 80%](./assets/sample_model.png)---
+![bg right 80%](./assets/sample_model.png)
 
 ---
 

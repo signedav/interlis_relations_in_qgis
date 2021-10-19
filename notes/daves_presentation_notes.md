@@ -73,3 +73,10 @@ https://app.clickup.com/2192114/v/dc/22wqj-2899/22wqj-687
 3. Gehe auf Website und erkläre die Grafik
 4. Zeige in Model Baker mit Kbs + gehe auf die Repos und zeige die Files
 5. Zeigs bei unserem Building-Parcel Beispiel
+
+#### Inheritance mapping
+- new class
+- super class
+- sub class
+- new and sub class
+
