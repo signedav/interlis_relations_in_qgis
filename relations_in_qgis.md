@@ -291,6 +291,8 @@ Building.t_type: (
 
 ![bg right 80%](./assets/sample_model.png)---
 
+---
+
 ## Super Class
 ```
 Building.t_type: (
@@ -309,6 +311,7 @@ Building.t_type: (
 ## Sample Model
 
 ![bg right 80%](./assets/sample_model.png)
+
 ---
 
 ## Sub Class
@@ -327,6 +330,7 @@ Public_Office_Building.t_type: (
 ## Sample Model
 
 ![bg right 80%](./assets/sample_model.png)
+
 ---
 
 ## New + Sub Class
